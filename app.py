@@ -50,18 +50,3 @@ def generate_journal():
 
 if __name__ == "__main__":
     app.run(debug=True)
-
-
-
-
-
-#cd Users\ojiri\Desktop\task_dialog_system
-#python3 dialog_system.py
-
-#What 
-#Why なぜ。これをすることで世界がどう変わるのか。
-#How
-#もし具体的に何か研究テーマが決まっていたら、ｗｈａｔ　ｗｈｙ　ｈｏｗを具体的に書く。
-#work で今期何をやったか。
-#作った対話システムを説明。
-#RG Portalで過去のスライドがみられる。
