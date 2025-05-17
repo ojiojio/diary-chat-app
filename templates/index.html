@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <title>日記チャットAI</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="header">
+    <h1>今日はどんな一日だった？</h1>
+    <p>一緒に振り返ってみよう</p>
+  </div>
+
+  <div class="chat-box" id="chat-box">
+    <div class="message ai">こんにちは！今日はどんなことがあった？気軽に教えてね。</div>
+  </div>
+
+  <div class="input-area">
+    <input type="text" id="user-input" placeholder="今日の出来事を書いてね..." />
+    <button onclick="send()">送信</button>
+    <button onclick="generateJournal()">日記を生成</button>
+  </div>
+
+  <script>
+    async function send() {
+      const input = document.getElementById("user-input").value.trim();
+      if (!input) return;
+
+      const chatBox = document.getElementById("chat-box");
+
+      const userMsg = document.createElement("div");
+      userMsg.className = "message user";
+      userMsg.textContent = input;
+      chatBox.appendChild(userMsg);
+
+      document.getElementById("user-input").value = "";
+
+      const res = await fetch("/chat", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ user_input: input })
+      });
+
+      const data = await res.json();
+
+      const aiMsg = document.createElement("div");
+      aiMsg.className = "message ai";
+      aiMsg.textContent = data.response;
+      chatBox.appendChild(aiMsg);
+
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    async function generateJournal() {
+        const res = await fetch("/generate_journal", {
+            method: "POST"
+        });
+        const data = await res.json();
+
+        const chatBox = document.getElementById("chat-box");
+
+        const journalMsg = document.createElement("div");
+        journalMsg.className = "message journal";
+        journalMsg.textContent = "📝 今日の日記:\n" + data.journal;
+        chatBox.appendChild(journalMsg);
+
+        chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+
+  </script>
+</body>
+</html>
